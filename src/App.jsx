@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import  Header  from './components/Header';
+import Header from './components/Header';
 import Shop from './components/Shop';
 import { DUMMY_PRODUCTS } from './dummy_projects';
-
+import { CardContext } from './store/shopping-cart-context';
 function App() {
   const [shoppingCart, setShoppingCart] = useState({
     items: [],
@@ -64,15 +64,17 @@ function App() {
       };
     });
   }
-  return (
-    <>
-      <Header
-        cart={shoppingCart}
-        onUpdateItemQuantity={handleUpdateCartItemQuantity}
-      />
 
-      <Shop onAddItemToCart={handleAddItemToCart} />
-    </>
+  const crtValue = {
+    items: shoppingCart.items,
+    addItemToCart: handleAddItemToCart,
+    updateItemQuantity: handleUpdateCartItemQuantity,
+  };
+  return (
+    <CardContext.Provider value={crtValue}>
+      <Header />
+      <Shop />
+    </CardContext.Provider>
   );
 }
 
